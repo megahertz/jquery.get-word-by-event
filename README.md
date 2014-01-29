@@ -8,7 +8,7 @@ Require: jQuery 1.7+
 install
 -------
 Include jQuery and plugin JavaScript files:
-```js
+```html
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
 <script type="text/javascript" src="jquery.get-word-by-event.js"></script>
 ```
