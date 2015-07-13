@@ -1,7 +1,7 @@
 GetWordByEvent jQuery plugin
 ========================
 
-This plugin allow to get the word under cursor
+This plugin allows to get the word under cursor
 
 Require: jQuery 1.7+
 
