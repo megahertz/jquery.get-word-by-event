@@ -3,7 +3,7 @@
 <head>
 	<title>GetWordByEvent jQuery plugin example</title>
 	<meta charset="utf-8"/>
-	<link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootswatch/3.0.3/united/bootstrap.min.css"/>
+	<link rel="stylesheet" type="text/css" href="http://netdna.bootstrapcdn.com/bootswatch/3.0.3/united/bootstrap.min.css"/>
 	<style type="text/css">
 		body { max-width: 50em; margin: 0 auto; padding: 1em; }
 		label { display: block; font-weight: normal; }
@@ -23,10 +23,16 @@
 	<div>
 		<h2>on click</h2>
 		<label id="click-label" class="alert alert-info">click a word in the following text:</label>
-		<blockquote id="click-text">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</blockquote>
+
+        <blockquote id="click-text">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</blockquote>
+        <p><a id="stop-handling" class="btn btn-primary">Stop handling</a></p>
 
 		<pre>$('#click-text').getWordByEvent('click', function(event, word) {
     $('#click-label').html('Clicked: &lt;b&gt;' + word + '&lt;/b&gt;');
+
+});
+$('#stop-handling').click(function() {
+    $('#click-text').getWordByEvent('click', false);
 });</pre>
 	</div>
 
@@ -56,10 +62,15 @@
 		$('#click-text').getWordByEvent('click', function(event, word) {
 			$('#click-label').html('Clicked: <b>' + word + '</b>');
 		});
+        $('#stop-handling').click(function() {
+            $('#click-text').getWordByEvent('click', false);
+        });
+
 		$('#right-text').getWordByEvent('contextmenu', function(event, word) {
 			event.preventDefault(); // Prevent popup menu
 			$('#right-label').html('Right clicked: <b>' + word + '</b>');
 		});
+
 		$('#move-text').getWordByEvent('mousemove', function(event, word) {
 			$('#move-label').html('Word under cursor: <b>' + word + '</b>');
 		});

@@ -36,16 +36,12 @@
 			range.setEnd(event.rangeParent, event.rangeOffset);
 			expandRangeToWord(range);
 			word = range.toString();
-			range.detach();
 			return word;
 		// Webkit
 		} else if (document.caretRangeFromPoint) {
-			console.error('caretRangeFromPoint');
 			range = document.caretRangeFromPoint(event.clientX, event.clientY);
-			console.error(range);
 			expandRangeToWord(range);
 			word = range.toString();
-			range.detach();
 			return word;
 		// Firefox for events without rangeParent
 		} else if (document.caretPositionFromPoint) {
@@ -82,24 +78,35 @@
 	}
 
 	/**
-	 * Attach event(s) to element and call handler when event is triggered
+	 * Attach/detach event(s) to element and call handler when event is triggered
 	 * @param {String} event
-	 * @param {Function} handler function(Event event, String word)
+	 * @param {Function|Boolean} handler function(Event event, String word)
 	 */
 	$.fn.getWordByEvent = function(event, handler) {
 		// Save last coordinates for events which does not have coordinates info (such as taphold)
 		var coordinates = {};
-		this.on('mousedown', function(e) {
-			coordinates = { x: e.clientX, y: e.clientY }
-		});
 
-		this.on(event, function(e) {
+		function handleCoordinates(e) {
+			coordinates = { x: e.clientX, y: e.clientY };
+		}
+
+		function handle(e) {
 			e = e.originalEvent || e;
 			if (!e.clientX) {
 				e.clientX = coordinates.x;
 				e.clientY = coordinates.y;
 			}
 			handler.call(this, e, getWordFromEvent(e));
-		});
+		}
+
+		if (handler) {
+			this.data('getWordByEvent.handleCoordinates', handleCoordinates);
+			this.data('getWordByEvent.handler', handle);
+			this.on('mousedown', handleCoordinates);
+			this.on(event, handle);
+		} else {
+			this.off('mousedown', this.data('getWordByEvent.handleCoordinates'));
+			this.off(event, this.data('getWordByEvent.handler'));
+		}
 	};
 })(jQuery);
